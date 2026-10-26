@@ -1,0 +1,178 @@
+/* Additions on top of the original aretconsulting theme (theme.css):
+   the pieces whose images/scripts were not recoverable, and one type scale
+   that replaces the theme's and the earlier rem values (see
+   docs/typografie-bericht.md). */
+
+/* Type scale: six sizes, whole pixels, one value below 992 px. */
+:root {
+  --primary: #34568b;
+  --dark: #2c2c2c;
+  --muted: #5c636b;
+  --surface: #f3f5f9;
+  --fs-small: 15px;
+  --fs-text: 17px;
+  --fs-h3: 20px;
+  --fs-h2: 28px;
+  --fs-h1: 44px;
+  --fs-display: 64px;
+}
+@media (max-width: 991.98px) {
+  :root {
+    --fs-small: 14px;
+    --fs-text: 16px;
+    --fs-h3: 18px;
+    --fs-h2: 24px;
+    --fs-h1: 32px;
+    --fs-display: 40px;
+  }
+}
+
+/* The theme sets the root to 17 px (15 px on phones); spacing is in rem,
+   so one fixed root keeps every rem a whole-pixel multiple of 16. */
+html { font-size: 16px; }
+body { font-family: "PT Sans", sans-serif; font-size: var(--fs-text); color: var(--dark); background: #fff; overflow-x: hidden; }
+p, li, dd, dt, address { font-size: var(--fs-text); }
+/* PT Sans ships 400 and 700 only; the theme's 500 was drawn as 400 anyway. */
+h1, h2 { font-weight: 400; }
+h3, h4, strong, b { font-weight: 700; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+/* The theme drew every h3 as a small uppercase label with tracking. */
+h3 { font-size: var(--fs-h3); text-transform: none; letter-spacing: 0; }
+
+/* Header: text logo instead of the lost SVG logo, plain-JS menu */
+header { border-bottom: 1px solid #e5e5e5; background: #fff; }
+header .navbar { display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; padding-bottom: 1.25rem; position: relative; }
+.logo-text { display: flex; flex-direction: column; color: var(--dark); font-weight: 700; font-size: var(--fs-h2); line-height: 1.1; text-decoration: none; white-space: nowrap; }
+.logo-text span { font-weight: 400; font-size: var(--fs-small); color: var(--muted); margin-top: .25rem; }
+.logo-text:hover { color: var(--dark); text-decoration: none; }
+.logo-text--light, .logo-text--light:hover { color: #fff; }
+.logo-text--light span { color: #c4ccd8; }
+header .menu, footer .menu { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
+header .menu li::before, footer .menu li::before { content: none !important; display: none !important; }
+/* The id outranks the theme's `ul:not(...):not(...):not(...) li` 20 px inset,
+   which added 140 px to the menu row and pushed it past the edge at 992 px. */
+#mainmenu .menu li, footer .menu li { padding: 0; margin: 0; }
+header .menu a { color: var(--dark); text-decoration: none; font-size: var(--fs-small); }
+header .menu a:hover, header .menu .current-menu-item a { color: var(--primary); }
+header .menu .current-menu-item a { font-weight: 700; }
+header .menu-item--external a { color: var(--primary); font-weight: 700; }
+.nav-toggle { display: none; background: none; border: 0; width: 44px; height: 44px; padding: 10px; cursor: pointer; }
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after { display: block; height: 2px; background: var(--dark); position: relative; content: ""; }
+.nav-toggle span::before { position: absolute; top: -8px; left: 0; right: 0; }
+.nav-toggle span::after { position: absolute; top: 8px; left: 0; right: 0; }
+@media (min-width: 992px) {
+  /* The theme's navbar drops the container's 15 px inset, which put the logo
+     and the last menu item 15 px outside the page's text column. */
+  header .navbar { flex-wrap: nowrap; padding-left: 15px; padding-right: 15px; }
+  header .menu-container { display: flex; align-items: center; margin-left: 1.25rem; }
+  header .menu { align-items: center; }
+  header .menu a { white-space: nowrap; }
+}
+@media (max-width: 991.98px) {
+  /* The theme pins the header on phones; keep it in flow so the drop-down menu opens under it. */
+  header .header-container { position: static; }
+  #main { margin-top: 0; }
+  header .header-container .navbar { height: auto; padding: 1rem 15px; }
+  .nav-toggle { display: block; margin-right: -10px; }
+  .menu-container { display: none; position: absolute; left: 0; right: 0; top: 100%; background: #fff; z-index: 10; border-bottom: 1px solid #e5e5e5; box-shadow: 0 8px 16px rgba(0,0,0,.08); }
+  .menu-container.is-open { display: block; }
+  /* The id outranks the theme's `ul:not(...)` padding-left: 0, which pinned the items to the screen edge. */
+  header #mainmenu .menu { flex-direction: column; gap: 0; padding: .5rem 15px 1rem; }
+  header .menu a { display: block; padding: .75rem 0; font-size: var(--fs-text); }
+}
+
+/* Buttons keep the old site's pill shape and capitals (its own design),
+   on the scale's small size. */
+.btn-aretconsulting, a.btn-aretconsulting { font-size: var(--fs-small); display: inline-block; }
+
+/* Hero: portrait in place of the lost slider image, on a flat surface */
+.hero { padding: 3rem 0 1rem; background: var(--surface); }
+.hero__photo img { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto; }
+.hero h2 { font-size: var(--fs-display); font-weight: 700; line-height: 1; margin-bottom: 1.5rem; }
+.hero h2 em { font-weight: 400; font-style: italic; }
+.hero .slide-content p { max-width: 34rem; }
+.hero .link-container { margin-top: 1.5rem; }
+/* Beside the text the portrait starts on the page's text edge, not centred in its column. */
+@media (min-width: 768px) { .hero__photo img { margin: 0; } }
+@media (max-width: 767.98px) {
+  .hero { padding-top: 2rem; }
+  .hero__photo img { max-width: 280px; margin-bottom: 2rem; }
+}
+
+/* Contact box (the image half was a stock photo that did not survive) */
+.contact-box { background: #fff; padding: 2.5rem; }
+.contact-box .headline-container h2 { font-size: var(--fs-h2); margin-bottom: 2rem; }
+.box-highlight-primary .headline-container a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+.contact-box .box-icon-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+/* The theme stacks icon over text and centres it below 577px; keep one layout
+   everywhere: a small icon beside its heading, text left-aligned. */
+.content-image-box .contact-box .box-icon { display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; gap: .75rem; text-align: left; margin-bottom: 0; }
+/* A fixed square the row may not stretch, lined up with the heading's first line. */
+.content-image-box .contact-box .container-icon { flex: 0 0 24px; width: 24px; height: 24px; align-self: flex-start; margin: 2px 0 0; background: none; }
+.contact-box .container-icon svg { width: 24px; height: 24px; fill: var(--primary); display: block; }
+.content-image-box .contact-box .box-icon .container-content { flex: 1 1 auto; width: auto; margin-left: 0; }
+.contact-box h3 { margin-bottom: .5rem; }
+.contact-box p { margin-bottom: .25rem; }
+.contact-box p a { color: var(--primary); }
+.box-highlight-primary .btn-container { text-align: center; margin-top: 2.5rem; }
+@media (max-width: 991.98px) {
+  .contact-box .box-icon-container { grid-template-columns: 1fr; max-width: 24rem; margin-inline: auto; }
+}
+@media (max-width: 575.98px) { .contact-box { padding: 1.5rem; } }
+
+/* Services: plain text list, no bullets, no heading (the old tabs had no
+   further pages behind them and no title of their own). */
+.services-box { background: #fff; padding: 2.5rem; }
+.services-list { margin: 0; padding: 0; list-style: none; }
+#main .services-list li { display: block; list-style: none; margin: 0 0 1rem; padding: 0; }
+#main .services-list li:last-child { margin-bottom: 0; }
+.services-list li::before { content: none !important; }
+@media (max-width: 575.98px) { .services-box { padding: 1.5rem; } }
+
+/* Page introductions: the title first, the old site's subtitle under it
+   in normal case at text size. */
+.introduction-text { margin-top: 0; padding: 3rem 0 1rem; }
+.home .introduction-text { padding-top: 4rem; }
+.introduction-text h1 { margin-bottom: .5rem; }
+.page-subtitle { color: var(--muted); margin-bottom: 1.5rem; }
+.introduction-text .text-content-container h2 { font-size: var(--fs-h3); font-weight: 700; margin-top: 1.5rem; margin-bottom: .75rem; }
+.introduction-text .text-content-container h3 { font-size: var(--fs-text); margin-top: 1.5rem; }
+.introduction-text a:not(.btn-aretconsulting) { color: var(--primary); }
+/* Bulleted lists: the bullet stands on the text edge and the item text one
+   step to the right of it. The theme's 20 px li padding (meant for its own
+   arrow glyph) pushed the text in and left the browser's bullet hanging
+   outside the column. The bullet is drawn, not typed. */
+.text-content-container ul { display: block; padding: 0; margin: 0 0 1rem; list-style: none; }
+#main .text-content-container ul li { display: block; list-style: none; position: relative; padding: 0 0 0 1.25rem; margin: 0 0 .25rem; }
+#main .text-content-container ul li::before { content: "" !important; display: block !important; position: absolute; left: 0; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.btn-row { margin-top: 1.5rem; }
+main#main { margin-bottom: 4rem; }
+
+/* Footer: two rows on the page's text edge. Desktop: name left, link right,
+   on one baseline; copyright left, legal links right. Phone: everything
+   stacked on the same left edge. The theme's footer padding (56.46 px) and
+   Bootstrap's row/column insets are dropped; the spacing is set here. */
+footer.dark-background { padding: 0; }
+footer .footer-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 1rem 2rem; padding-top: 3rem; padding-bottom: 1.5rem; }
+.footer-profile { margin: 0; color: #ccc; font-size: var(--fs-text); }
+/* Only the label is underlined; the arrow stays in the hit target without it. */
+.footer-profile a, .footer-profile a:hover { color: #fff; text-decoration: none; }
+.footer-profile a span:first-child { text-decoration: underline; text-underline-offset: 3px; }
+footer .footer-content { padding: 1.5rem 0 2rem; border-top: 1px solid #444; }
+footer .footer-bottom { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .75rem 2rem; }
+footer .footer-bottom .menu { gap: 2rem; margin: 0; }
+/* The theme gives every li a 20 px inset for its arrow glyph, except in a
+   list whose id starts with "menu-" -- hence id="menu-legal" on this one.
+   Its menu styling (column on phones, 12/16 px link padding) is undone here. */
+footer #menu-legal { flex-direction: row; justify-content: flex-start; }
+footer #menu-legal li a { padding: 0; line-height: inherit; }
+footer #menu-legal li a:hover { color: #fff; }
+footer .menu a, footer .copyright { color: #ccc; font-size: var(--fs-small); }
+footer .copyright { margin: 0; text-align: left; }
+@media (max-width: 767.98px) {
+  footer .footer-top, footer .footer-bottom { flex-direction: column; align-items: flex-start; }
+  footer .footer-top { padding-top: 2.5rem; }
+  /* The legal links first, the copyright as the last line. */
+  footer .footer-bottom .menu { order: -1; }
+}
